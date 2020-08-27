@@ -2,7 +2,6 @@
 
 set -e
 
-version=0.1.0
 tag="$(cat .devo)"
 if [ -z "$tag" ]; then
 	deno_fname="deno"
@@ -87,9 +86,4 @@ if [ ! -e "$exec" ]; then
 	download_deno
 fi
 
-if [ "$1" = "--version" ]; then
-	echo "devo $version"
-	"$exec" "--version"
-else
-	"$exec" "$@"
-fi
+"$exec" "$@"
