@@ -36,6 +36,7 @@ download_deno() {
 		fi
 		deno_uri="https://github.com${deno_asset_path}"
 	else
+		echo "Download $tag"
 		deno_uri="https://github.com/denoland/deno/releases/download/${tag}/deno-${target}.zip"
 	fi
 
