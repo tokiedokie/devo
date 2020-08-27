@@ -4,6 +4,11 @@ set -e
 
 version=0.1.0
 tag="$(cat .devo)"
+if [ -z "$tag" ]; then
+	deno_fname="deno"
+else
+	deno_fname="deno_$tag"
+fi
 
 download_deno() {
 	if [ "$(uname -m)" != "x86_64" ]; then
@@ -35,29 +40,31 @@ download_deno() {
 			echo "Error: Unable to find latest Deno release on GitHub." 1>&2
 			exit 1
 		fi
+		echo "deno is not found, devo will download it first"
 		deno_uri="https://github.com${deno_asset_path}"
 	else
+		echo "deno $tag is not found, devo will download it first"
 		deno_uri="https://github.com/denoland/deno/releases/download/${tag}/deno-${target}.zip"
 	fi
 
 	deno_install="${DENO_INSTALL:-$HOME/.deno}"
 	bin_dir="$deno_install/bin"
 	temp_dir="$bin_dir/temp"
-	exe="$temp_dir/deno_$tag"
+	deno_path="$temp_dir/$deno_fname"
 
 	if [ ! -d "$bin_dir" ]; then
 		mkdir -p "$bin_dir"
 	fi
 
 	mkdir -p "$bin_dir/temp"
-	curl --fail --location --progress-bar --output "$exe.zip" "$deno_uri"
+	curl --fail --location --progress-bar --output "$deno_path.zip" "$deno_uri"
 	cd "$bin_dir"
-	unzip -o "$exe.zip" -d "temp" > /dev/null
+	unzip -o "$deno_path.zip" -d "temp" > /dev/null
 	chmod +x "temp/deno"
-	mv "temp/deno" "deno_$tag"
+	mv "temp/deno" "$deno_fname"
 	rm -r "$temp_dir"
 
-	echo "Deno was installed successfully to $exe"
+	echo "Deno was installed successfully to $bin_dir/$deno_fname"
 	if command -v deno >/dev/null; then
 		echo "Run 'deno --help' to get started"
 	else
@@ -68,22 +75,21 @@ download_deno() {
 		echo "Manually add the directory to your \$HOME/$shell_profile (or similar)"
 		echo "  export DENO_INSTALL=\"$deno_install\""
 		echo "  export PATH=\"\$DENO_INSTALL/bin:\$PATH\""
-		echo "Run '$exe --help' to get started"
+		echo "Run '$bin_dir/$deno_fname --help' to get started"
 	fi
 }
 
 deno_install="${DENO_INSTALL:-$HOME/.deno}"
 bin_dir="$deno_install/bin"
-exe="$bin_dir/deno_$tag"
-echo "$exe"
-if [ ! -e "$exe" ]; then
-	echo "$tag is not found, devo will download it first"
+exec="$bin_dir/$deno_fname"
+
+if [ ! -e "$exec" ]; then
 	download_deno
 fi
 
 if [ "$1" = "--version" ]; then
 	echo "devo $version"
-	"$exe" "--version"
+	"$exec" "--version"
 else
-	"$exe" "$@"
+	"$exec" "$@"
 fi
