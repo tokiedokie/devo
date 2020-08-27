@@ -2,11 +2,11 @@
 
 set -e
 
-tag="$(cat .devo)"
-if [ -z "$tag" ]; then
+version="$(cat .devo)"
+if [ -z "$version" ]; then
 	deno_fname="deno"
 else
-	deno_fname="deno_$tag"
+	deno_fname="deno_$version"
 fi
 
 download_deno() {
@@ -29,7 +29,7 @@ download_deno() {
 		esac
 	fi
 
-	if [ -z "$tag" ]; then
+	if [ -z "$version" ]; then
 		deno_asset_path=$(
 			curl -sSf https://github.com/denoland/deno/releases |
 				grep -o "/denoland/deno/releases/download/.*/deno-${target}\\.zip" |
@@ -42,8 +42,8 @@ download_deno() {
 		echo "deno is not found, devo will download it first"
 		deno_uri="https://github.com${deno_asset_path}"
 	else
-		echo "deno $tag is not found, devo will download it first"
-		deno_uri="https://github.com/denoland/deno/releases/download/${tag}/deno-${target}.zip"
+		echo "deno $version is not found, devo will download it first"
+		deno_uri="https://github.com/denoland/deno/releases/download/${version}/deno-${target}.zip"
 	fi
 
 	deno_install="${DENO_INSTALL:-$HOME/.deno}"
