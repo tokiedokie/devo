@@ -11,7 +11,7 @@ write version in `.devo`
 v1.0.0
 ```
 
-devo consumes same commands as deno and install version you want automatically
+devo consumes same commands as deno and install a specific version you want automatically
 
 ```
 devo <same subcommands as deno>
