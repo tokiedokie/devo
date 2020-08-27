@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 dirs = "1.0"
+ureq = "1.0"
