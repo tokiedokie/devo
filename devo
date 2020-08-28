@@ -2,7 +2,10 @@
 
 set -e
 
-version="$(cat .devo)"
+if [ -e ".devo" ]; then
+	version="$(cat .devo)"
+fi
+
 if [ -z "$version" ]; then
 	deno_fname="deno"
 else
