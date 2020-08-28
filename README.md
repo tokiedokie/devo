@@ -2,6 +2,11 @@
 
 devo is simple version manager for deno
 
+## Installation
+
+```
+curl -fsSL https://raw.githubusercontent.com/tokiedokie/devo/master/install.sh | sh
+```
 
 ## Usage
 
