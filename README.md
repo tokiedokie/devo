@@ -2,6 +2,8 @@
 
 devo is simple version manager for deno
 
+Just use `devo` instead of `deno`, everything works great
+
 ## Installation
 
 ```
