@@ -24,4 +24,4 @@ devo consumes same commands as deno and install a specific version you want auto
 devo <same subcommands as deno>
 ```
 
-If you didn't provide any version, devo just run current `deno` version
+If you don't provide any version, devo just runs current `deno` version
