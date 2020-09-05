@@ -12,13 +12,25 @@ curl -fsSL https://raw.githubusercontent.com/tokiedokie/devo/master/install.sh |
 
 ## Usage
 
+devo consumes same commands as deno and install a specific version you want automatically
+
+### cli args
+
+you can specify deno version in cli args
+
+```
+devo v1.2.0 <same subcommands as deno>
+```
+
+### `.devo` file
+
 write version in `.devo`
 
 ```
 v1.0.0
 ```
 
-devo consumes same commands as deno and install a specific version you want automatically
+run devo in cli
 
 ```
 devo <same subcommands as deno>
