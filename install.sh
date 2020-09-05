@@ -15,7 +15,7 @@ fi
 curl --fail --location --no-progress-meter --output "$devo_path" "$devo_uri"
 chmod +x "$devo_path"
 
-echo "Deno was installed successfully to $devo_path"
+echo "devo was installed successfully to $devo_path"
 
 if command -v devo >/dev/null; then
   echo "Run 'devo --help' to get started"
