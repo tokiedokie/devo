@@ -4,6 +4,11 @@ devo is simple version manager for deno
 
 Just use `devo` instead of `deno`, everything works great
 
+## Dependency
+
+- bash
+- unzip
+
 ## Installation
 
 ```
