@@ -1,9 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
 if [ -e ".devo" ]; then
 	version="$(cat .devo)"
+fi
+
+reg="^v[0-9]+\.[0-9]+\.[0-9]+$"
+if [[ $1 =~ $reg ]]; then
+	version="$1"
+	args_version_flag="1"
 fi
 
 if [ -z "$version" ]; then
@@ -89,4 +95,8 @@ if [ ! -e "$exec" ]; then
 	download_deno
 fi
 
-"$exec" "$@"
+if [ "$args_version_flag" = "1" ]; then
+	"$exec" ${@:2}
+else
+	"$exec" "$@"
+fi
