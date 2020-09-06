@@ -9,7 +9,7 @@ Just use `devo` instead of `deno`, everything works great
 - bash
 - unzip
 
-## Installation
+## Installation and upgrade
 
 ```
 curl -fsSL https://raw.githubusercontent.com/tokiedokie/devo/master/install.sh | sh
