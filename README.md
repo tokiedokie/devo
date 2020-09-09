@@ -4,6 +4,8 @@ devo is simple version manager for deno
 
 Just use `devo` instead of `deno`, everything works great
 
+![demo](https://raw.githubusercontent.com/tokiedokie/devo/master/.github/images/demo.gif)
+
 ## Dependency
 
 - bash
