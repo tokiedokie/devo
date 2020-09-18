@@ -2,23 +2,12 @@
 
 set -e
 
-if [ -e ".devo" ]; then
-	version="$(cat .devo)"
-fi
-
-reg="^v[0-9]+\.[0-9]+\.[0-9]+$"
-if [[ $1 =~ $reg ]]; then
-	version="$1"
-	args_version_flag="1"
-fi
-
-if [ -z "$version" ]; then
-	deno_fname="deno"
-else
-	deno_fname="deno_$version"
-fi
+deno_install="${DENO_INSTALL:-$HOME/.deno}"
+bin_dir="$deno_install/bin"
 
 download_deno() {
+	target_version=$1
+
 	if [ "$(uname -m)" != "x86_64" ]; then
 		echo "Error: Unsupported architecture $(uname -m). Only x64 binaries are available." 1>&2
 		exit 1
@@ -38,7 +27,7 @@ download_deno() {
 		esac
 	fi
 
-	if [ -z "$version" ]; then
+	if [ -z "$target_version" ]; then
 		deno_asset_path=$(
 			curl -sSf https://github.com/denoland/deno/releases |
 				grep -o "/denoland/deno/releases/download/.*/deno-${target}\\.zip" |
@@ -51,23 +40,23 @@ download_deno() {
 		echo "deno is not found, devo will download it first"
 		deno_uri="https://github.com${deno_asset_path}"
 	else
-		echo "deno $version is not found, devo will download it first"
+		echo "deno $target_version is not found, devo will download it first"
 		deno_uri="https://github.com/denoland/deno/releases/download/${version}/deno-${target}.zip"
 	fi
 
 	deno_install="${DENO_INSTALL:-$HOME/.deno}"
 	bin_dir="$deno_install/bin"
 	temp_dir="$bin_dir/temp"
-	deno_path="$temp_dir/$deno_fname"
+	deno_zip_path="$temp_dir/$deno_fname.zip"
 
 	if [ ! -d "$bin_dir" ]; then
 		mkdir -p "$bin_dir"
 	fi
 
 	mkdir -p "$bin_dir/temp"
-	curl --fail --location --progress-bar --output "$deno_path.zip" "$deno_uri"
+	curl --fail --location --progress-bar --output "$deno_zip_path" "$deno_uri"
 	cd "$bin_dir"
-	unzip -o "$deno_path.zip" -d "temp" > /dev/null
+	unzip -o "$deno_zip_path" -d "temp" > /dev/null
 	chmod +x "temp/deno"
 	mv "temp/deno" "$deno_fname"
 	rm -r "$temp_dir"
@@ -87,16 +76,40 @@ download_deno() {
 	fi
 }
 
-deno_install="${DENO_INSTALL:-$HOME/.deno}"
-bin_dir="$deno_install/bin"
+if [ -e ".devo" ]; then
+	version="$(cat .devo)"
+fi
+
+reg="^v[0-9]+\.[0-9]+\.[0-9]+$"
+if [[ $1 =~ $reg ]]; then
+	version="$1"
+fi
+
+if [ $1 = "global" ]; then
+	if [ -z $2 ]; then
+		echo "Specify the version"
+		exit 1
+	fi
+	version="$2"
+fi
+
+if [ -z "$version" ]; then
+	deno_fname="deno"
+else
+	deno_fname="deno_$version"
+fi
+
 exec="$bin_dir/$deno_fname"
 
 if [ ! -e "$exec" ]; then
-	download_deno
+	download_deno "$version"
 fi
 
-if [ "$args_version_flag" = "1" ]; then
+if [[ $1 =~ $reg ]]; then
 	"$exec" ${@:2}
+elif [ $1 = "global" ]; then
+	cp "$exec" "$bin_dir/deno"
+	echo "Global version change successful"
 else
 	"$exec" "$@"
 fi
