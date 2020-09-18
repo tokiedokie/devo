@@ -6,7 +6,7 @@ deno_install="${DENO_INSTALL:-$HOME/.deno}"
 bin_dir="$deno_install/bin"
 
 download_deno() {
-	target_version=$1
+	local target_version=$1
 
 	if [ "$(uname -m)" != "x86_64" ]; then
 		echo "Error: Unsupported architecture $(uname -m). Only x64 binaries are available." 1>&2
@@ -19,16 +19,16 @@ download_deno() {
 	fi
 
 	if [ "$OS" = "Windows_NT" ]; then
-		target="x86_64-pc-windows-msvc"
+		local target="x86_64-pc-windows-msvc"
 	else
 		case $(uname -s) in
-		Darwin) target="x86_64-apple-darwin" ;;
-		*) target="x86_64-unknown-linux-gnu" ;;
+		Darwin) local target="x86_64-apple-darwin" ;;
+		*) local target="x86_64-unknown-linux-gnu" ;;
 		esac
 	fi
 
 	if [ -z "$target_version" ]; then
-		deno_asset_path=$(
+		local deno_asset_path=$(
 			curl -sSf https://github.com/denoland/deno/releases |
 				grep -o "/denoland/deno/releases/download/.*/deno-${target}\\.zip" |
 				head -n 1
@@ -38,16 +38,14 @@ download_deno() {
 			exit 1
 		fi
 		echo "deno is not found, devo will download it first"
-		deno_uri="https://github.com${deno_asset_path}"
+		local deno_uri="https://github.com${deno_asset_path}"
 	else
 		echo "deno $target_version is not found, devo will download it first"
-		deno_uri="https://github.com/denoland/deno/releases/download/${version}/deno-${target}.zip"
+		local deno_uri="https://github.com/denoland/deno/releases/download/${version}/deno-${target}.zip"
 	fi
 
-	deno_install="${DENO_INSTALL:-$HOME/.deno}"
-	bin_dir="$deno_install/bin"
-	temp_dir="$bin_dir/temp"
-	deno_zip_path="$temp_dir/$deno_fname.zip"
+	local temp_dir="$bin_dir/temp"
+	local deno_zip_path="$temp_dir/$deno_fname.zip"
 
 	if [ ! -d "$bin_dir" ]; then
 		mkdir -p "$bin_dir"
