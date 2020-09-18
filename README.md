@@ -44,3 +44,7 @@ devo <same subcommands as deno>
 ```
 
 If you don't provide any version, devo just runs current `deno` version
+
+## TODO
+
+- [ ] add `devo global` to switch deno binary
