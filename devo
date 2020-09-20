@@ -83,7 +83,7 @@ if [[ $1 =~ $reg ]]; then
 	version="$1"
 fi
 
-if [ $1 = "global" ]; then
+if [ "$1" = "global" ]; then
 	if [ -z $2 ]; then
 		echo "Specify the version"
 		exit 1
@@ -105,7 +105,7 @@ fi
 
 if [[ $1 =~ $reg ]]; then
 	"$exec" ${@:2}
-elif [ $1 = "global" ]; then
+elif [ "$1" = "global" ]; then
 	cp "$exec" "$bin_dir/deno"
 	echo "Global version change successful"
 else
