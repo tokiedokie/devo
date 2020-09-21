@@ -2,6 +2,7 @@
 
 # Ported from deno:
 # Copyright 2018-2020 the Deno authors. All rights reserved. MIT license.
+# https://github.com/denoland/deno/blob/master/LICENSE
 
 set -e
 
