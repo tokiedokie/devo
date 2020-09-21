@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Ported from deno:
+# Copyright 2018-2020 the Deno authors. All rights reserved. MIT license.
+
 set -e
 
 deno_install="${DENO_INSTALL:-$HOME/.deno}"

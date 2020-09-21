@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Ported from deno:
+# Copyright 2018-2020 the Deno authors. All rights reserved. MIT license.
+
 set -e
 
 devo_uri="https://raw.githubusercontent.com/tokiedokie/devo/master/devo"
